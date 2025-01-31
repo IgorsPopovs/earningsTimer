@@ -83,6 +83,7 @@ var startDate = new Date(currentdate.getMonth() + 1 + '/10/' + currentdate.getFu
 var currentDate = new Date(currentdate.getMonth() + 1 + '/' + currentdate.getDate() + '/' + currentdate.getFullYear());
 var endDate = new Date(currentdate.getMonth() + 2 + '/9/' + currentdate.getFullYear());
 var totalBusinessDays = getBusinessDatesCount(startDate,endDate);
+var totalBusinessHours = totalBusinessDays * 8;
 var passedBusinessDays = getBusinessDatesCount(startDate,currentDate);
 
 
@@ -90,16 +91,17 @@ oneSecondPayout();
 function oneSecondPayout() {
 	setTimeout(() => {
 		currentdate = new Date();
+		//currentdate.setHours(13)
 		var earnedByTodayDays = Number((salary * passedBusinessDays / totalBusinessDays).toFixed());
 		var earnedByTodayHours = 0;
 		var earnedNyCurrentHour = 0;
 		var earnedByCurrentMinute = 0;
-		if (currentdate.getHours() > endHour) {
-			earnedByTodayHours = salary / 160 * 8;
+		if (currentdate.getHours() > endHour - 1) {
+			earnedByTodayHours = salary / totalBusinessHours * 8;
 		} else if (currentdate.getHours() > startHour) {
-			earnedByTodayHours = (currentdate.getHours() - startHour) * (salary / 160);
-			earnedNyCurrentHour = currentdate.getMinutes() * (salary / 160 / 60)
-			earnedByCurrentMinute = currentdate.getSeconds() * (salary / 160 / 60 / 60)
+			earnedByTodayHours = (currentdate.getHours() - startHour) * (salary / totalBusinessHours);
+			earnedNyCurrentHour = currentdate.getMinutes() * (salary / totalBusinessHours / 60)
+			earnedByCurrentMinute = currentdate.getSeconds() * (salary / totalBusinessHours / 60 / 60)
 		}
 
 		
