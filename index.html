@@ -1,0 +1,90 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+<table>
+	<tr>
+		<td>
+			<p>Your total earnings: </p>
+		</td>
+		<td>
+			<p id="balance"></p>
+		</td>
+		<td>
+			<p>&#8364;</p>
+		</td>
+		<td>
+			<p>/</p>
+		</td>
+		<td>
+			<p id="salary">3000</p>
+		</td>
+		<td>
+			<p>&#8364;</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p>Earned today: </p>
+		</td>
+		<td>
+			<p id="balanceToday"></p>
+		</td>
+		<td>
+			<p>&#8364;</p>
+		</td>
+	</tr>
+</table>
+
+
+
+<script>
+const salary = 3000;
+var currentdate = new Date();
+var startDate = new Date(currentdate.getMonth() + 1 + '/10/' + currentdate.getFullYear());
+var currentDate = new Date(currentdate.getMonth() + 1 + '/' + currentdate.getDate() + '/' + currentdate.getFullYear());
+var endDate = new Date(currentdate.getMonth() + 2 + '/9/' + currentdate.getFullYear());
+var totalBusinessDays = getBusinessDatesCount(startDate,endDate);
+var passedBusinessDays = getBusinessDatesCount(startDate,currentDate);
+
+
+oneSecondPayout();
+function oneSecondPayout() {
+	setTimeout(() => {
+		currentdate = new Date();
+		var earnedByTodayDays = salary * passedBusinessDays / totalBusinessDays;
+		var earnedByTodayHours = (currentdate.getHours() - 8) * (salary / 160);
+		var earnedNyCurrentHour = currentdate.getMinutes() * (salary / 160 / 60)
+		var earnedByCurrentMinute = currentdate.getSeconds() * (salary / 160 / 60 / 60)
+		
+		var balance = earnedByTodayDays + earnedByTodayHours + earnedNyCurrentHour + earnedByCurrentMinute;
+		document.getElementById("balance").innerHTML = balance.toFixed(2);
+
+
+		var balanceToday = earnedByTodayHours + earnedNyCurrentHour + earnedByCurrentMinute;
+		document.getElementById("balanceToday").innerHTML = balanceToday.toFixed(2);
+		
+		if (currentdate.getHours() < 16) oneSecondPayout()
+	}, "1000");
+}
+
+
+function getBusinessDatesCount(startDate, endDate) {
+    let count = 0;
+    const curDate = new Date(startDate.getTime());
+    while (curDate <= endDate) {
+        const dayOfWeek = curDate.getDay();
+        if(dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+        curDate.setDate(curDate.getDate() + 1);
+    }
+    //alert(count);
+    return count;
+}
+
+</script> 
+
+</body>
+</html>
+
